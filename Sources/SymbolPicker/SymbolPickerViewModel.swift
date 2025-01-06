@@ -11,7 +11,7 @@ public protocol SymbolPickerDelegate: AnyObject {
     func didPickSymbol(symbol: String)
 }
 
-public final class SymbolPickerViewModel: ObservableObject {
+final public class SymbolPickerViewModel: ObservableObject {
 
     weak public var delegate: SymbolPickerDelegate?
 

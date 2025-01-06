@@ -118,10 +118,10 @@ public struct SymbolPicker: View {
         self.init(symbol: symbol, nullable: true)
     }
 
-    public init(viewModel: SymbolPickerViewModel) {
+    public init(symbol: Binding<String?>, viewModel: SymbolPickerViewModel) {
         self.viewModel = viewModel
         self.nullable = false
-        self._symbol = .constant(nil)
+        self._symbol = symbol
     }
 
     /// Private designated initializer.
