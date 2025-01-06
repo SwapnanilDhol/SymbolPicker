@@ -81,7 +81,7 @@ public struct SymbolPicker: View {
     }
 
     // MARK: - Properties
-    
+    @ObservedObject public var viewModel: SymbolPickerViewModel
     @Binding public var symbol: String?
     @State private var searchText = ""
     @Environment(\.dismiss) private var dismiss
@@ -118,11 +118,18 @@ public struct SymbolPicker: View {
         self.init(symbol: symbol, nullable: true)
     }
 
+    public init(viewModel: SymbolPickerViewModel) {
+        self.viewModel = viewModel
+        self.nullable = false
+        self._symbol = .constant(nil)
+    }
+
     /// Private designated initializer.
     private init(symbol: Binding<String?>,
                  nullable: Bool) {
         self._symbol = symbol
         self.nullable = nullable
+        self.viewModel = SymbolPickerViewModel()
     }
 
     // MARK: - View Components
@@ -195,6 +202,7 @@ public struct SymbolPicker: View {
             LazyVGrid(columns: [GridItem(.adaptive(minimum: Self.gridDimension, maximum: Self.gridDimension))]) {
                 ForEach(symbols.filter { searchText.isEmpty ? true : $0.localizedCaseInsensitiveContains(searchText) }, id: \.self) { thisSymbol in
                     Button {
+                        viewModel.selectSymbol(symbol: thisSymbol)
                         symbol = thisSymbol
                         dismiss()
                     } label: {
